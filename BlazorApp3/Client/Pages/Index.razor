@@ -1,8 +1,8 @@
 ﻿@page "/"
-@using BlazorApp3.Shared.ViewModels
+@using BlazorApp3.Shared.Wrappers 
 @inject HttpClient Http
 
-@if (books == null)
+@if (response == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -18,7 +18,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in books)
+            @foreach (var book in response.Books)
             {
                 <tr>
                     <td>@book.BookId</td>
@@ -33,10 +33,10 @@ else
 
 
 @code {
-    private List<BookViewModel> books;
+    private Response response;
 
     protected override async Task OnInitializedAsync()
     {
-        books = await Http.GetFromJsonAsync<List<BookViewModel>>("api/Books");
+        response = await Http.GetFromJsonAsync<Response>("api/Books");
     }
 }

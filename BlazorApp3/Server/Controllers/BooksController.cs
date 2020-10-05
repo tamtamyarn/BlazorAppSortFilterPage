@@ -5,6 +5,7 @@ using BlazorApp3.Server.Data;
 using BlazorApp3.Server.Extensions;
 using BlazorApp3.Server.Options;
 using BlazorApp3.Shared.ViewModels;
+using BlazorApp3.Shared.Wrappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,8 +34,10 @@ namespace BlazorApp3.Server.Controllers
                 .ToListAsync();
 
             var bookViewModels = mapper.Map<List<BookViewModel>>(books);
-            
-            return Ok(bookViewModels);
+
+            var totalCount = await context.Books.Filter(filterOption).CountAsync();
+
+            return Ok(new Response(bookViewModels, pageOption.PageNumber, pageOption.PageSize, totalCount));
         }
     }
 }
