@@ -24,5 +24,14 @@ namespace BlazorApp3.Server.Extensions
                     return books;
             }
         }
+
+        public static IQueryable<Book> FilterByAuthor(this IQueryable<Book> books, FilterByAuthorOption option)
+        {
+            return option.Author switch
+            {
+                "all" => books,
+                _ => books.Where(b => b.Author == option.Author),
+            };
+        }
     }
 }
