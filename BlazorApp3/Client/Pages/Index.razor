@@ -1,5 +1,5 @@
 ﻿@page "/"
-@using BlazorApp3.Shared.Wrappers 
+@using BlazorApp3.Shared.Wrappers
 @inject HttpClient Http
 
 @if (response == null)
@@ -8,6 +8,20 @@
 }
 else
 {
+    <p>
+        <Select DefaultValue=@("id") Style="width:120px" @bind-Value="@sortBy">
+            <SelectOption Value="id">ID</SelectOption>
+            <SelectOption Value="title">Title</SelectOption>
+            <SelectOption Value="author">Author</SelectOption>
+            <SelectOption Value="publication">Publication</SelectOption>
+        </Select>
+        <RadioGroup @bind-Value="isDesc" ButtonStyle="solid">
+            <Radio RadioButton Value="@("false")">Asc</Radio>
+            <Radio RadioButton Value="@("true")">Desc</Radio>
+        </RadioGroup>
+        <Button OnClick="@UpdateBookListAsync">Sort</Button>
+    </p>
+
     <table class="table">
         <thead>
             <tr>
@@ -30,7 +44,7 @@ else
         </tbody>
     </table>
 
-    <p><Pagination @bind-PageIndex="@pageNumber" Total="@response.TotalRecords" OnPageIndexChange="@ChangePage"></Pagination></p>
+    <p><Pagination @bind-PageIndex="@pageNumber" Total="@response.TotalRecords" OnPageIndexChange="@ChangePageAsync"></Pagination></p>
 }
 
 
@@ -39,13 +53,22 @@ else
 
     private int pageNumber = 1;
 
+    private string sortBy = "ID";
+
+    private string isDesc = "false";
+
     protected override async Task OnInitializedAsync()
     {
-        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}");
+        await this.UpdateBookListAsync();
     }
 
-    private async Task ChangePage()
+    private async Task ChangePageAsync()
     {
-        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}");
+        await this.UpdateBookListAsync();
+    }
+
+    private async Task UpdateBookListAsync()
+    {
+        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}&sortby={sortBy}&desc={isDesc}");
     }
 }
