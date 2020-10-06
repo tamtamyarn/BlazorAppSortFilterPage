@@ -4,5 +4,6 @@
     {
         public string Author { get; set; }
         public string Publication { get; set; }
+        public string Authors { get; set; }
     }
 }

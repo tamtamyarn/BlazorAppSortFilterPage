@@ -25,7 +25,7 @@ else
             <SelectOption Value="50">50</SelectOption>
             <SelectOption Value="100">100</SelectOption>
         </Select>
-        <Select DefaultValue=@("all") Style="width:240px" @bind-Value="@author">
+        <Select DefaultValue=@("all") Style="width:240px" @bind-Value="@authorList" Mode="multiple">
             <SelectOption Value="all">All</SelectOption>
             @foreach (var author in authors)
             {
@@ -84,7 +84,7 @@ else
 
     private List<string> authors;
 
-    private string author = "all";
+    private string authorList = "all";
 
     private string publication = "all";
 
@@ -96,6 +96,6 @@ else
 
     private async Task UpdateBookListAsync()
     {
-        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}&pagesize={pageSize}&sortby={sortBy}&desc={isDesc}&author={author}&publication={publication}");
+        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}&pagesize={pageSize}&sortby={sortBy}&desc={isDesc}&authors={authorList}&publication={publication}");
     }
 }
