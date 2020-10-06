@@ -57,7 +57,7 @@ else
         </tbody>
     </table>
 
-    <p><Pagination @bind-PageIndex="@pageNumber" PageSize="@int.Parse(pageSize)" Total="@response.TotalRecords" OnPageIndexChange="@ChangePageAsync"></Pagination></p>
+    <p><Pagination @bind-PageIndex="@pageNumber" PageSize="@response.PageSize" Total="@response.TotalRecords" OnPageIndexChange="@UpdateBookListAsync"></Pagination></p>
 }
 
 
@@ -80,11 +80,6 @@ else
     {
         await this.UpdateBookListAsync();
         authors = await Http.GetFromJsonAsync<List<string>>($"api/Authors");
-    }
-
-    private async Task ChangePageAsync()
-    {
-        await this.UpdateBookListAsync();
     }
 
     private async Task UpdateBookListAsync()
