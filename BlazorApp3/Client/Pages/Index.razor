@@ -29,14 +29,23 @@ else
             }
         </tbody>
     </table>
+
+    <p><Pagination @bind-PageIndex="@pageNumber" Total="@response.TotalRecords" OnPageIndexChange="@ChangePage"></Pagination></p>
 }
 
 
 @code {
     private Response response;
 
+    private int pageNumber = 1;
+
     protected override async Task OnInitializedAsync()
     {
-        response = await Http.GetFromJsonAsync<Response>("api/Books");
+        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}");
+    }
+
+    private async Task ChangePage()
+    {
+        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}");
     }
 }
