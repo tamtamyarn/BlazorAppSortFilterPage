@@ -19,7 +19,13 @@ else
             <Radio RadioButton Value="@("false")">Asc</Radio>
             <Radio RadioButton Value="@("true")">Desc</Radio>
         </RadioGroup>
-        <Button OnClick="@UpdateBookListAsync">Sort</Button>
+        <Select DefaultValue=@("10") Style="width:120px" @bind-Value="@pageSize">
+            <SelectOption Value="10">10</SelectOption>
+            <SelectOption Value="30">30</SelectOption>
+            <SelectOption Value="50">50</SelectOption>
+            <SelectOption Value="100">100</SelectOption>
+        </Select>
+        <Button OnClick="@UpdateBookListAsync">Update</Button>
     </p>
 
     <table class="table">
@@ -44,7 +50,7 @@ else
         </tbody>
     </table>
 
-    <p><Pagination @bind-PageIndex="@pageNumber" Total="@response.TotalRecords" OnPageIndexChange="@ChangePageAsync"></Pagination></p>
+    <p><Pagination @bind-PageIndex="@pageNumber" PageSize="@int.Parse(pageSize)" Total="@response.TotalRecords" OnPageIndexChange="@ChangePageAsync"></Pagination></p>
 }
 
 
@@ -52,6 +58,8 @@ else
     private Response response;
 
     private int pageNumber = 1;
+
+    private string pageSize = "10";
 
     private string sortBy = "ID";
 
@@ -69,6 +77,6 @@ else
 
     private async Task UpdateBookListAsync()
     {
-        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}&sortby={sortBy}&desc={isDesc}");
+        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}&pagesize={pageSize}&sortby={sortBy}&desc={isDesc}");
     }
 }
