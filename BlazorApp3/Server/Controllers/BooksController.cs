@@ -25,17 +25,21 @@ namespace BlazorApp3.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List([FromQuery]PageOption pageOption, [FromQuery]SortOption sortOption, [FromQuery]FilterByAuthorOption filterByAuthorOption)
+        public async Task<IActionResult> List([FromQuery]PageOption pageOption, [FromQuery]SortOption sortOption, [FromQuery]FilterByAuthorOption filterByAuthorOption, [FromQuery]FilterByPublicationOption filterByPublicationOption)
         {
             var books = await context.Books
                 .FilterByAuthor(filterByAuthorOption)
+                .FilterByPublication(filterByPublicationOption)
                 .Sort(sortOption)
                 .Page(pageOption)
                 .ToListAsync();
 
             var bookViewModels = mapper.Map<List<BookViewModel>>(books);
 
-            var totalCount = await context.Books.FilterByAuthor(filterByAuthorOption).CountAsync();
+            var totalCount = await context.Books
+                .FilterByAuthor(filterByAuthorOption)
+                .FilterByPublication(filterByPublicationOption)
+                .CountAsync();
 
             return Ok(new Response(bookViewModels, pageOption.PageNumber, pageOption.PageSize, totalCount));
         }

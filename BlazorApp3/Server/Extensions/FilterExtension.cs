@@ -33,5 +33,14 @@ namespace BlazorApp3.Server.Extensions
                 _ => books.Where(b => b.Author == option.Author),
             };
         }
+
+        public static IQueryable<Book> FilterByPublication(this IQueryable<Book> books, FilterByPublicationOption option)
+        {
+            return option.Publication switch
+            {
+                "all" => books,
+                _ => books.Where(b => int.Parse(option.Publication) <= b.Publication && b.Publication < int.Parse(option.Publication) + 10),
+            };
+        }
     }
 }
