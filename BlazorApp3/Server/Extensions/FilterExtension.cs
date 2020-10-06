@@ -11,6 +11,10 @@ namespace BlazorApp3.Server.Extensions
             switch (option.FilterBy)
             {
                 case "author":
+                    if (option.FilterValue == "all")
+                    {
+                        return books;
+                    }
                     return books.Where(b => b.Author == option.FilterValue);
 
                 case "publication":
