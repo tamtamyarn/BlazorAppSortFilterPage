@@ -2,7 +2,7 @@
 @using BlazorApp3.Shared.Wrappers
 @inject HttpClient Http
 
-@if (response == null)
+@if (response == null || authors == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -24,6 +24,12 @@ else
             <SelectOption Value="30">30</SelectOption>
             <SelectOption Value="50">50</SelectOption>
             <SelectOption Value="100">100</SelectOption>
+        </Select>
+        <Select DefaultValue=@("") Style="width:240px">
+            @foreach (var author in authors)
+            {
+                <SelectOption Value="@author">@author</SelectOption>
+            }
         </Select>
         <Button OnClick="@UpdateBookListAsync">Update</Button>
     </p>
@@ -65,9 +71,12 @@ else
 
     private string isDesc = "false";
 
+    private List<string> authors;
+
     protected override async Task OnInitializedAsync()
     {
         await this.UpdateBookListAsync();
+        authors = await Http.GetFromJsonAsync<List<string>>($"api/Authors");
     }
 
     private async Task ChangePageAsync()
