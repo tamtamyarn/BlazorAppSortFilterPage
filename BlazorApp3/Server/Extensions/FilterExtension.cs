@@ -8,38 +8,26 @@ namespace BlazorApp3.Server.Extensions
     {
         public static IQueryable<Book> Filter(this IQueryable<Book> books, FilterOption option)
         {
-            switch (option.FilterBy)
-            {
-                case "author":
-                    if (option.FilterValue == "all")
-                    {
-                        return books;
-                    }
-                    return books.Where(b => b.Author == option.FilterValue);
-
-                case "publication":
-                    return books.Where(b => int.Parse(option.FilterValue) <= b.Publication && b.Publication < int.Parse(option.FilterValue) + 10);
-
-                default:
-                    return books;
-            }
+            return books
+                .FilterByAuthor(option.Author)
+                .FilterByPublication(option.Publication);
         }
 
-        public static IQueryable<Book> FilterByAuthor(this IQueryable<Book> books, FilterByAuthorOption option)
+        public static IQueryable<Book> FilterByAuthor(this IQueryable<Book> books, string author)
         {
-            return option.Author switch
+            return author switch
             {
                 "all" => books,
-                _ => books.Where(b => b.Author == option.Author),
+                _ => books.Where(b => b.Author == author),
             };
         }
 
-        public static IQueryable<Book> FilterByPublication(this IQueryable<Book> books, FilterByPublicationOption option)
+        public static IQueryable<Book> FilterByPublication(this IQueryable<Book> books, string publication)
         {
-            return option.Publication switch
+            return publication switch
             {
                 "all" => books,
-                _ => books.Where(b => int.Parse(option.Publication) <= b.Publication && b.Publication < int.Parse(option.Publication) + 10),
+                _ => books.Where(b => int.Parse(publication) <= b.Publication && b.Publication < int.Parse(publication) + 10),
             };
         }
     }

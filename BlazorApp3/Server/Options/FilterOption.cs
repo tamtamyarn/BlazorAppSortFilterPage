@@ -2,7 +2,7 @@
 {
     public class FilterOption
     {
-        public string FilterBy { get; set; }
-        public string FilterValue { get; set; }
+        public string Author { get; set; }
+        public string Publication { get; set; }
     }
 }
