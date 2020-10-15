@@ -2,8 +2,8 @@
 {
     public class FilterOption
     {
-        public string Author { get; set; }
-        public string Publication { get; set; }
-        public string Authors { get; set; }
+        public string Author { get; set; } = "all";
+        public string Publication { get; set; } = "all";
+        public string Authors { get; set; } = "all";
     }
 }

@@ -19,9 +19,6 @@ namespace BlazorApp3.Shared.Wrappers
         }
 
         // Deserialization of reference types without parameterless constructor is not supported.
-        public Response()
-        {
-
-        }
+        public Response() { }
     }
 }

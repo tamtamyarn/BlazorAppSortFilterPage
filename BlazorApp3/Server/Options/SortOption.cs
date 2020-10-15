@@ -2,7 +2,7 @@
 {
     public class SortOption
     {
-        public string SortBy { get; set; }
-        public bool Desc { get; set; }
+        public string SortBy { get; set; } = "id";
+        public bool Desc { get; set; } = false;
     }
 }
