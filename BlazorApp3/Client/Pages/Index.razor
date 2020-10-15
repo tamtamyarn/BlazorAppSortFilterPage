@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using BlazorApp3.Shared.Wrappers
+@using System.Web
 @inject HttpClient Http
 
 @if (response == null || authors == null)
@@ -96,6 +97,17 @@ else
 
     private async Task UpdateBookListAsync()
     {
-        response = await Http.GetFromJsonAsync<Response>($"api/Books?pagenumber={pageNumber}&pagesize={pageSize}&sortby={sortBy}&desc={isDesc}&authors={authorList}&publication={publication}");
+        var query = HttpUtility.ParseQueryString("");
+
+        query.Add("pagenumber", pageNumber.ToString());
+        query.Add("pagesize", pageSize.ToString());
+        query.Add("sortby", sortBy);
+        query.Add("desc", isDesc);
+        query.Add("authors", authorList);
+        query.Add("publication", publication);
+        
+        var queryString = query.ToString();
+
+        response = await Http.GetFromJsonAsync<Response>($"api/Books?{queryString}");
     }
 }
